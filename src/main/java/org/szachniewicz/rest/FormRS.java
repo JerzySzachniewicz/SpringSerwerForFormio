@@ -1,20 +1,85 @@
 package org.szachniewicz.rest;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
+import org.szachniewicz.model.FormInfo;
+import org.szachniewicz.model.FormSchema;
+import org.szachniewicz.servises.FormService;
+
+import java.util.LinkedList;
+import java.util.List;
 
 @RestController
-@RequestMapping("/form")
+@RequestMapping("/forms")
 @CrossOrigin(origins = "*")
 public class FormRS {
 
-    @GetMapping(path = "formsToEdit")
-    public String formsToEdit() {
-        return "{\"formsList\":[{\"name\": \"test1\" ,\"dateOfEdit\": \"2019-07-11\"}, {\"name\": \"test2\" ,  \"dateOfEdit\": \"2018-07-11\"}]}";
+    private final FormService formService;
+
+    public FormRS(FormService formService) {
+        this.formService = formService;
     }
 
-    @PostMapping(path = "saveForm")
-    public String saveForm(@RequestBody String jsonStr) {
+    @GetMapping(path = "formList")
+    public List<FormInfo> getFormList() {
+        return formService.getFormList();
+    }
+
+    @PostMapping(path = "formSchema")
+    public String postEditForm(@RequestBody String formSchema) {
+//        formService.saveFormEdit(formSchema);
         return "{\"succes\":\"sucess\"}";
     }
+
+    @GetMapping(path = "formSchema/{id}")
+    public FormSchema getForm(@PathVariable String id) {
+        return formService.getFormSchema(id);
+    }
+
+    @PostMapping(path = "form/{id}")
+    public String saveForm(@RequestBody String form, @PathVariable String id) {
+        formService.saveFormFill(id, form);
+        return "{\"succes\":\"sucess\"}";
+    }
+
+    @GetMapping(path = "test")
+    public List<test> test() {
+        List<test> tests = new LinkedList<>();
+        test a = new test();
+        a.setA("a");
+        a.setB("ab");
+        tests.add(a);
+        test b = new test();
+        b.setA("ba");
+        b.setB("bab");
+        tests.add(b);
+        test c = new test();
+        c.setA("cba");
+        c.setB("cbab");
+        tests.add(c);
+        return tests;
+    }
+
+    public class test {
+        private String a;
+        private String b;
+
+        public String getA() {
+            return a;
+        }
+
+        public void setA(String a) {
+            this.a = a;
+        }
+
+        public String getB() {
+            return b;
+        }
+
+        public void setB(String b) {
+            this.b = b;
+        }
+    }
+
 
 }
