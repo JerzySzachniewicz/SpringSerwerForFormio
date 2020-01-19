@@ -1,6 +1,8 @@
 package org.szachniewicz.model;
 
-public class FormSchema {
+import java.io.Serializable;
+
+public class FormSchema implements Serializable {
     private String display;
     private String title;
     private String name;

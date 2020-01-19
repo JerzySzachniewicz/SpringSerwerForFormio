@@ -1,14 +1,25 @@
 package org.szachniewicz.model;
 
 import java.io.Serializable;
+import java.math.BigDecimal;
 import java.util.Date;
 
 public class FormInfo implements Serializable {
+
+    private BigDecimal id;
     private String title;
     private String name;
     private String path;
     private Date creationDate;
     private Date modificationDate;
+
+    public BigDecimal getId() {
+        return id;
+    }
+
+    public void setId(BigDecimal id) {
+        this.id = id;
+    }
 
     public String getTitle() {
         return title;

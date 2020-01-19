@@ -6,6 +6,7 @@ import org.szachniewicz.model.FormInfo;
 import org.szachniewicz.model.FormSchema;
 import org.szachniewicz.servises.FormService;
 
+import java.math.BigDecimal;
 import java.util.LinkedList;
 import java.util.List;
 
@@ -26,18 +27,18 @@ public class FormRS {
     }
 
     @PostMapping(path = "formSchema")
-    public String postEditForm(@RequestBody String formSchema) {
-//        formService.saveFormEdit(formSchema);
+    public String postEditForm(@RequestBody FormSchema formSchema) {
+        formService.saveFormEdit(formSchema);
         return "{\"succes\":\"sucess\"}";
     }
 
     @GetMapping(path = "formSchema/{id}")
-    public FormSchema getForm(@PathVariable String id) {
+    public FormSchema getForm(@PathVariable BigDecimal id) {
         return formService.getFormSchema(id);
     }
 
     @PostMapping(path = "form/{id}")
-    public String saveForm(@RequestBody String form, @PathVariable String id) {
+    public String saveForm(@RequestBody String form, @PathVariable BigDecimal id) {
         formService.saveFormFill(id, form);
         return "{\"succes\":\"sucess\"}";
     }

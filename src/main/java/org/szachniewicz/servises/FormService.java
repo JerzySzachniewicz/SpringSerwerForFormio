@@ -1,14 +1,12 @@
 package org.szachniewicz.servises;
 
-import org.json.simple.parser.JSONParser;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.szachniewicz.model.FormInfo;
 import org.szachniewicz.model.FormSchema;
 
-import java.io.FileReader;
+import java.math.BigDecimal;
+import java.util.Date;
 import java.util.List;
-import java.util.Objects;
 
 @Service
 public class FormService {
@@ -20,28 +18,31 @@ public class FormService {
     }
 
     public List<FormInfo> getFormList() {
-        return null;
+        return formFileManager.getFormList();
     }
 
     public void saveFormEdit(FormSchema formSchema) {
-
+        BigDecimal id = formFileManager.getFreeFormId();
+        generateAndSaveFormInfo(formSchema, id);
+        formFileManager.saveFormSchema(formSchema, id);
     }
 
-    public FormSchema getFormSchema(String formId) {
-        JSONParser parser = new JSONParser();
-        FormSchema formSchema = new FormSchema();
-
-        String file = Objects.requireNonNull(FormService.class.getClassLoader().getResource("form.json")).getFile();
-        try {
-            formSchema.setComponents(parser.parse(new FileReader(file)).toString());
-        } catch (Exception ignored){
-
-        }
-
-        return formSchema;
+    private void generateAndSaveFormInfo(FormSchema formSchema, BigDecimal id) {
+        FormInfo formInfo = new FormInfo();
+        formInfo.setId(id);
+        formInfo.setCreationDate(new Date());
+        formInfo.setModificationDate(new Date());
+        formInfo.setName(formSchema.getName());
+        formInfo.setTitle(formSchema.getTitle());
+        formInfo.setPath(formInfo.getPath());
+        formFileManager.saveFormInfo(formInfo);
     }
 
-    public void saveFormFill(String id, String form) {
+    public FormSchema getFormSchema(BigDecimal formId) {
+        return formFileManager.getFormSchema(formId);
+    }
 
+    public void saveFormFill(BigDecimal id, String form) {
+        formFileManager.saveFilledForm(id, form);
     }
 }
