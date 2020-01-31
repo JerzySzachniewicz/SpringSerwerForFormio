@@ -31,11 +31,11 @@ public class FormFileManager {
 
     private void createDictionaries() {
         try {
-            String jarFilePatch = new File(FormFileManager.class.getProtectionDomain().getCodeSource().getLocation().toURI()).getPath();
+            String jarFilePatch = "C:/";
             createFormInfoDir(jarFilePatch);
             createFormSchemaDir(jarFilePatch);
             createFilledFormsDir(jarFilePatch);
-        } catch (URISyntaxException | IOException e) {
+        } catch (IOException e) {
             e.printStackTrace();
         }
     }
@@ -93,6 +93,13 @@ public class FormFileManager {
     }
 
     public FormSchema getFormSchema(BigDecimal formId) {
+        File file = new File(formSchemaDirectory.toString()+ "/" + formId.toString() + ".txt");
+        try (FileInputStream f = new FileInputStream(file);
+             ObjectInputStream o = new ObjectInputStream(f)) {
+            return (FormSchema) o.readObject();
+        }catch (IOException | ClassNotFoundException e) {
+            e.printStackTrace();
+        }
         return new FormSchema();
     }
 
@@ -121,7 +128,8 @@ public class FormFileManager {
     }
 
     public BigDecimal getFreeFormId() {
-        File[] files = new File(formInfoDirectory.toUri()).listFiles();
-        return new BigDecimal(files.length);
+//        File[] files = new File(formInfoDirectory.toUri()).listFiles();
+//        return new BigDecimal(files.length);
+        return BigDecimal.ZERO;
     }
 }

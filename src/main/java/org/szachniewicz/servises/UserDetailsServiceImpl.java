@@ -16,7 +16,7 @@ public class UserDetailsServiceImpl implements UserDetailsService {
 
     @Override
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
-        var applicationUser = new ApplicationUser();
+        ApplicationUser applicationUser = new ApplicationUser();
         applicationUser.setId(1);
         applicationUser.setPassword("$2a$10$hpVK./znpYpYzucdNIuQeOxZs90vwXZOF3CELyC6DTNzcjmI6jT9i");
         applicationUser.setName("test");
